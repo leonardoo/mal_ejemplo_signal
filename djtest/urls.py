@@ -20,7 +20,8 @@ from appuser import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', views.CreateUserView.as_view(), name="create_user"),
+    url(r'^$', views.CreateUserView.as_view(), name="test_created_user"),
+    #url(r'^$', views.CreateUserView.as_view(), name="test_created_user"),
     url(r'^created/$', views.user_create, name="created_user"),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

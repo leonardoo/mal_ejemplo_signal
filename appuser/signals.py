@@ -2,6 +2,8 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from . import models
+
 from rest_framework.authtoken.models import Token
 
 # implementacion para recibir un signal
@@ -34,3 +36,17 @@ def create_profile(sender, **kwargs):
 
 
 # para continuar leer apps
+
+
+@receiver(post_save, sender=models.User)
+def historical_plan(sender, **kwargs):
+    created = kwargs.get("created", False)
+    user = kwargs.get("instance")
+    if created:
+        user.refercode = "{:0>6d}".format(user.pk)
+        user.save()
+
+    history = models.HistoricalPlan()
+    history.owner = user
+    history.actual = user.plan
+    history.save()
